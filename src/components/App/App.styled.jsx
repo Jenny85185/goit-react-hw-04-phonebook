@@ -1,11 +1,11 @@
-import styled from "@emotion/styled";
-
+import styled from '@emotion/styled';
 
 export const AppContainer = styled.div`
-  padding: 15px;
+  margin: 40px auto;
   display: flex;
   flex-direction: column;
-  margin-left:850px;
-    `;
-
-    
+  align-items: center;
+  width: 600px;
+  font-size: 20px;
+  text-transform: uppercase;
+`;

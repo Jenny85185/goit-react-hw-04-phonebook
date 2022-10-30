@@ -1,101 +1,67 @@
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Notify } from 'notiflix/build/notiflix-notify-aio';
-import { Component } from 'react';
-import { PhoneForm } from './PhoneBook.styled';
+import { Form, Input, FormButton, Label } from './PhoneBook.styled';
 
-class PhoneBook extends Component {
+
+export class PhoneBook extends Component {
   state = {
     name: '',
     number: '',
-    isDisabled: false,
   };
 
-  reset = () => {
-    this.setState({ name: '', number: '' });
+  handleChange = event => {
+    const { name, value } = event.currentTarget;
+    this.setState({ [name]: value });
   };
 
-  handleSubmit = e => {
-    e.preventDefault();
-    const contact = {
-      //   id: shortid.generate(),
-      name: this.state.name,
-      number: this.state.number,
-    };
-
-    this.props.addContact(contact);
-    this.reset();
-  };
-
-  handleChange = e => {
-    const { name, value } = e.currentTarget;
-
-    this.setState({ isDisabled: false, [name]: value });
-    console.log(this.props.contacts);
-
-    const contactFinder = this.props.contacts.find(
-      contact =>
-        contact.name.toLowerCase() === value.toLowerCase() ||
-        contact.number === value
-    );
-    if (contactFinder) {
-      this.setState({ isDisabled: true });
-      Notify.warning(`${value} is already in contacts.`);
-      this.setState({ [name]: '' });
-    }
+  handleSubmit = event => {
+    event.preventDefault();
+    this.props.onSubmit(this.state);
+    this.setState({
+      name: '',
+      number: '',
+    });
   };
 
   render() {
+    const { name, number } = this.state;
     return (
-      <PhoneForm>
-        <label>
+      <Form onSubmit={this.handleSubmit}>
+        <Label>
           Name:
-          <input
+          <Input
             type="text"
             name="name"
-            placeholder="john doe"
+            value={name}
+            onChange={this.handleChange}
+            placeholder="GoIt Manager"
             pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
             title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
-            value={this.state.name}
-            onChange={e => this.handleChange(e)}
-            isRequired
+            required
           />
-        </label>
-        <label>
+        </Label>
+        <Label>
           Number:
-          <input
+          <Input
             type="tel"
             name="number"
-            placeholder="+380 33 333 3333"
-            // className={styles.phoneInputCountry}
+            value={number}
+            placeholder="578-87-89"
+            onChange={this.handleChange}
             pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
             title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
-            value={this.state.number}
-            onChange={e => this.handleChange(e)}
-            isRequired
+            required
           />
-        </label>
-
-        <button
-          className={PhoneBook.submitButton}
-          type="submit"
-          disabled={this.state.isDisabled}
-        >
-          add contact
-        </button>
-      </PhoneForm>
+        </Label>
+        <FormButton type="submit">Add contact</FormButton>
+      </Form>
     );
   }
 }
 
-PhoneBook.propTypes = {
-  addContact: PropTypes.func.isRequired,
-  contacts: PropTypes.arrayOf(
-    PropTypes.shape({
-      name: PropTypes.string.isRequired,
-      number: PropTypes.string.isRequired,
-      id: PropTypes.string.isRequired,
-    })
-  ).isRequired,
+PhoneBook.prototypes = {
+  name: PropTypes.string.isRequired,
+  number: PropTypes.number.isRequired,
+  onSubmit: PropTypes.func.isRequired,
 };
-
 export default PhoneBook;
