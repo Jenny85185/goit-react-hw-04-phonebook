@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Form, Input, FormButton, Label } from './PhoneBook.styled';
+import { Form, Input, FormButton, Label } from './FormPhoneBook.styled';
 
 
-export class PhoneBook extends Component {
+export class FormPhoneBook extends Component {
   state = {
     name: '',
     number: '',
@@ -59,9 +59,9 @@ export class PhoneBook extends Component {
   }
 }
 
-PhoneBook.prototypes = {
+FormPhoneBook.prototypes = {
   name: PropTypes.string.isRequired,
   number: PropTypes.number.isRequired,
   onSubmit: PropTypes.func.isRequired,
 };
-export default PhoneBook;
+export default FormPhoneBook;
