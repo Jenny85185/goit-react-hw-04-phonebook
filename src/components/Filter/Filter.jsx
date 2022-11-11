@@ -1,20 +1,24 @@
+import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Input } from './Filter.styled';
+ 
 
-export const Filter = ({ filter, changeFilterInput }) => (
-  <label>
-    <Input
-      type="text"
-      name={filter}
-      onChange={changeFilterInput}
-      placeholder="Find contacts by name"
-    />
-  </label>
-);
+const Filter = ({ onFilterInput }) => {
+  const [filter, setFilter] = useState('');
+  useEffect(() => {
+   onFilterInput(filter);
+  }, [filter, onFilterInput]);
+
+  return (
+    <div >
+      <p >Find contacts by name</p>
+      <input name="filter" onChange={e => setFilter(e.target.value)} />
+    </div>
+  );
+};
 
 Filter.propTypes = {
-  filter: PropTypes.string.isRequired,
-  changeFilterInput: PropTypes.func.isRequired,
+ onFilterInput: PropTypes.func.isRequired,
 };
+
 
 export default Filter;

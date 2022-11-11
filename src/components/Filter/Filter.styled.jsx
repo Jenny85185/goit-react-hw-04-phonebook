@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-export const Input = styled.input`
+export const onFilterInput = styled.input`
   width: 350px;
   height: 30px;
   margin: 10px 0px;
