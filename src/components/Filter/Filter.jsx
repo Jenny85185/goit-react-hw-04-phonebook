@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
- 
 
 const Filter = ({ onFilterInput }) => {
   const [filter, setFilter] = useState('');
@@ -9,10 +8,13 @@ const Filter = ({ onFilterInput }) => {
   }, [filter, onFilterInput]);
 
   return (
+    
     <div >
-      <p >Find contacts by name</p>
-      <input name="filter" onChange={e => setFilter(e.target.value)} />
-    </div>
+     
+      <input name="filter" placeholder="Find contacts by name" onChange={e => setFilter(e.target.value)} />
+  
+      </div>
+      
   );
 };
 

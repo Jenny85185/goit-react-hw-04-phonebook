@@ -13,7 +13,7 @@ const App = () => {
     setContacts([...contacts, contact]);
   };
 
-  const onFilterInpu = value => {
+  const onFilterInput = value => {
     setFilter(value);
   };
 
@@ -36,7 +36,7 @@ const App = () => {
       </h1>
       <FormPhoneBook addContact={addContact} contacts={contacts} />
       <h2>Contacts</h2>
-      <Filter onFilterInput={onFilterInpu} />
+      <Filter onFilterInput={onFilterInput} />
       <ContactList
         contacts={contacts}
         filter={filter}
@@ -44,7 +44,7 @@ const App = () => {
         deleteContact={deleteContact}
       />
       {contacts.length === 0 && (
-        <p style={{ textDecoration: 'underline' }}>no contacts available</p>
+        <p >YOU HAVE NO CONTACTS YET</p>
       )}
     </div>
     </AppContainer>

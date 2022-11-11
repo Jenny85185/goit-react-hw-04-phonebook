@@ -96,10 +96,9 @@ const FormPhoneBook = ({ contacts, addContact }) => {
     );
   }
 
-
+export default FormPhoneBook;
 FormPhoneBook.prototypes = {
   name: PropTypes.string.isRequired,
   number: PropTypes.number.isRequired,
   onSubmit: PropTypes.func.isRequired,
 };
-export default FormPhoneBook;
