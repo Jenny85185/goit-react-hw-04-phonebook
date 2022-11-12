@@ -1,55 +1,96 @@
-import { useState } from 'react';
+import React from 'react';
+import { useState, useEffect } from 'react';
 import { AppContainer } from './App.styled';
 import Filter from 'components/Filter';
 import ContactList from 'components/ContactList';
-import useLocalStorage from 'Hooks/useLocalStorage';
 import FormPhoneBook from 'components/FormPhoneBook';
+import { nanoid } from 'nanoid';
 
-const App = () => {
-  const [contacts, setContacts] = useLocalStorage('contacts', []);
+function App() {
+  const [contacts, setContacts] = useState(() => {
+    const contacts = JSON.parse(localStorage.getItem('contacts'));
+    return (
+      contacts ?? [
+        { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
+        { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
+        { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
+        { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
+      ]
+    );
+  });
+
   const [filter, setFilter] = useState('');
 
-  const addContact = contact => {
-    setContacts([...contacts, contact]);
+  useEffect(() => {
+    localStorage.setItem('contacts', JSON.stringify(contacts));
+  }, [contacts]);
+
+  useEffect(() => {
+    return () => {
+      localStorage.removeItem('contacts');
+    };
+  }, []);
+const addContact = contact => {
+    if (isDuplicate(contact)) {
+      return alert(`${contact.name} is already in contacts`);
+    }
+
+    setContacts(prev => {
+      const newContact = {
+        id: nanoid(),
+        ...contact,
+      };
+      return [...prev, newContact];
+    });
   };
 
-  const onFilterInput = value => {
+  const removeContact = id => {
+    setContacts(prev => {
+      const newContacts = prev.filter(item => item.id !== id);
+      return newContacts;
+    });
+  };
+
+
+  const isDuplicate = ({ name }) => {
+    const result = contacts.find(item => item.name === name);
+    return result;
+  };
+
+
+  const getFilteredContacts = () => {
+    if (!filter) {
+      return contacts;
+    }
+    const normalizeFilter = filter.toLocaleLowerCase();
+    const filterContacts = contacts.filter(({ name }) => {
+      const normalizeName = name.toLocaleLowerCase();
+      const result = normalizeName.includes(normalizeFilter);
+      return result;
+    });
+    return filterContacts;
+  };
+
+  const filteredContacts = getFilteredContacts();
+
+  const handleChange = e => {
+    const { value } = e.currentTarget;
     setFilter(value);
   };
-
-  const filteredContacts = () => {
-    return contacts.filter(contact =>
-      contact.name.toLowerCase().includes(filter.toLowerCase())
-    );
-  };
-
-  const deleteContact = e => {
-    const elemToRemove = e.currentTarget.parentNode.id;
-    setContacts(contacts.filter(item => item.id !== elemToRemove));
-  };
+ 
 
   return (
     <AppContainer>
-    <div>
-      <h1>
-        Phonebook 
-      </h1>
-      <FormPhoneBook addContact={addContact} contacts={contacts} />
-      <h2>Contacts</h2>
-      <Filter onFilterInput={onFilterInput} />
-      <ContactList
-        contacts={contacts}
-        filter={filter}
-        filteredContacts={filteredContacts}
-        deleteContact={deleteContact}
-      />
-      {contacts.length === 0 && (
-        <p >YOU HAVE NO CONTACTS YET</p>
-      )}
-    </div>
+      <div>
+        <h1>Phonebook</h1>
+        <FormPhoneBook onSubmit={addContact} />
+        <h2>Contacts</h2>
+        <Filter value="filter" onChange={handleChange} />
+        <ContactList items={filteredContacts} removeContact={removeContact} />
+        {filteredContacts.length === 0 && <p>YOU HAVE NO CONTACTS YET </p>}
+      </div>
     </AppContainer>
   );
 };
 
 export default App;
-

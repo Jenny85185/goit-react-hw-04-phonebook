@@ -2,12 +2,13 @@ import styled from '@emotion/styled';
 
 export const List = styled.ul`
   list-style-type: none;
-  padding: 0; ;
+  padding: 0; 0;
 `;
 
 export const ListItem = styled.li`
   display: flex;
-  align-items: baseline; ;
+  align-items: baseline; 
+   padding: 0; 0;
 `;
 
 export const ListDeleteButton = styled.button`
@@ -19,6 +20,3 @@ export const ListDeleteButton = styled.button`
  
 `;
 
-export const Information = styled.p`
-color:red;
-`;
