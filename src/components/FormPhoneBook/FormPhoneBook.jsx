@@ -42,7 +42,7 @@ function FormPhoneBook ({ onSubmit }) {
           name="name"
           value={state.name}
           onChange={handleChange}
-          placeholder="Rosie Simpson"
+          placeholder="GoIt Manager"
           pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
           title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
           required
